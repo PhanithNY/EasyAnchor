@@ -14,7 +14,7 @@ extension Config where Self: NSObject {
   /// Makes it available to set properties with closures just after initializing.
   ///
   ///     let label = UILabel().decorate {
-  ///       $0.textAlignment = .Center
+  ///       $0.textAlignment = .center
   ///       $0.textColor = .black
   ///       $0.text = "Hi There!"
   ///     }
