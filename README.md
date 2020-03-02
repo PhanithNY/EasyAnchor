@@ -102,15 +102,6 @@ $0.setTitle("OK", for: .normal)
 $0.layer.cornerRadius = 8
 }
 ```
-Here is shorthand syntax for above code.
-```swift 
-let okButton = UIButton() .. { 
-$0.backgroundColor = .blue
-$0.setTitleColor(.white, for: .normal) 
-$0.setTitle("OK", for: .normal)
-$0.layer.cornerRadius = 8
-}
-```
 
 ## AutoLayout
 To enable or disable AutoLayout for specific view:
