@@ -23,11 +23,3 @@ extension Config where Self: NSObject {
     return self
   }
 }
-
-prefix operator ..
-infix operator ..: MultiplicationPrecedence
-public func .. <T>(object: T, closure: (inout T) -> Void) -> T {
-  var object = object
-  closure(&object)
-  return object
-}
