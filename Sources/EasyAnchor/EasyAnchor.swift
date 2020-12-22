@@ -132,4 +132,31 @@ public extension UIView {
     return self
   }
   
+  @discardableResult
+  final func topLeft(_ view: UIView? = superview, top: CGFloat = 0, left: CGFloat = 0) -> Self {
+    topAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.topAnchor : view.unsafelyUnwrapped.topAnchor, constant: top).isActive = true
+    leftAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.leftAnchor : view.unsafelyUnwrapped.leftAnchor, constant: left).isActive = true
+    return self
+  }
+  
+  @discardableResult
+  final func bottomLeft(_ view: UIView? = superview, bottom: CGFloat = 0, left: CGFloat = 0) -> Self {
+    bottomAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.bottomAnchor : view.unsafelyUnwrapped.bottomAnchor, constant: -bottom).isActive = true
+    leftAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.leftAnchor : view.unsafelyUnwrapped.leftAnchor, constant: left).isActive = true
+    return self
+  }
+  
+  @discardableResult
+  final func topRight(_ view: UIView? = superview, top: CGFloat = 0, right: CGFloat = 0) -> Self {
+    topAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.topAnchor : view.unsafelyUnwrapped.topAnchor, constant: top).isActive = true
+    rightAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.rightAnchor : view.unsafelyUnwrapped.rightAnchor, constant: -right).isActive = true
+    return self
+  }
+  
+  @discardableResult
+  final func bottomLeft(_ view: UIView? = superview, bottom: CGFloat = 0, left: CGFloat = 0) -> Self {
+    bottomAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.bottomAnchor : view.unsafelyUnwrapped.bottomAnchor, constant: -bottom).isActive = true
+    rightAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.rightAnchor : view.unsafelyUnwrapped.rightAnchor, constant: -right).isActive = true
+    return self
+  }
 }
