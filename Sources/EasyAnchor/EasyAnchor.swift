@@ -154,7 +154,7 @@ public extension UIView {
   }
   
   @discardableResult
-  final func bottomLeft(_ view: UIView? = nil, bottom: CGFloat = 0, left: CGFloat = 0) -> Self {
+  final func bottomRight(_ view: UIView? = nil, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
     bottomAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.bottomAnchor : view.unsafelyUnwrapped.bottomAnchor, constant: -bottom).isActive = true
     rightAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.rightAnchor : view.unsafelyUnwrapped.rightAnchor, constant: -right).isActive = true
     return self
