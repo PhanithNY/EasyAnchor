@@ -68,6 +68,15 @@ public extension UIView {
     return self
   }
   
+  /// Apply width constaint.
+  /// - Parameter constant: The constant value for anchor.
+  /// - Returns: current view
+  @discardableResult
+  final func width(_ constant: CGFloat) -> Self {
+    widthAnchor.constraint(equalToConstant: constant).isActive = true
+    return self
+  }
+  
   /// Apply width constraint.
   /// - Parameters:
   ///   - constantType: The constant type for this constraint. Default to .equal
@@ -94,6 +103,15 @@ public extension UIView {
   @discardableResult
   final func height(dimension: NSLayoutDimension, multiplier: CGFloat = 1.0) -> Self {
     heightAnchor.constraint(equalTo: dimension, multiplier: multiplier).isActive = true
+    return self
+  }
+  
+  /// Apply height constaint.
+  /// - Parameter constant: The constant value for anchor.
+  /// - Returns: current view
+  @discardableResult
+  final func height(_ constant: CGFloat) -> Self {
+    heightAnchor.constraint(equalToConstant: constant).isActive = true
     return self
   }
   
