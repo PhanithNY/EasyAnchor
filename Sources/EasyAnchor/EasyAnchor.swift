@@ -217,7 +217,7 @@ public extension UIView {
   /// - Returns: current view
   @discardableResult
   final func trailing(constraint: NSLayoutXAxisAnchor? = nil, _ constant: CGFloat = 0) -> Self {
-    trailingAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.trailingAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    trailingAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.trailingAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
     return self
   }
   
