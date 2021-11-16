@@ -316,4 +316,82 @@ public extension UIView {
     rightAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.rightAnchor : view.unsafelyUnwrapped.rightAnchor, constant: -right).isActive = true
     return self
   }
+  
+  @discardableResult
+  final func top(constraint: NSLayoutYAxisAnchor? = nil, _ constant: CGFloat = 0.0, priority: ConstantType = .equal) -> Self {
+    switch priority {
+    case .lessThanOrEqual:
+      topAnchor.constraint(lessThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.topAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    case .equal:
+      topAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.topAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    case .greaterThanOrEqual:
+      topAnchor.constraint(greaterThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.topAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    }
+    return self
+  }
+  
+  @discardableResult
+  final func left(constraint: NSLayoutXAxisAnchor? = nil, _ constant: CGFloat = 0.0, priority: ConstantType = .equal) -> Self {
+    switch priority {
+    case .lessThanOrEqual:
+      leftAnchor.constraint(lessThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.leftAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    case .equal:
+      leftAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.leftAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    case .greaterThanOrEqual:
+      leftAnchor.constraint(greaterThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.leftAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    }
+    return self
+  }
+  
+  @discardableResult
+  final func bottom(constraint: NSLayoutYAxisAnchor? = nil, _ constant: CGFloat = 0, priority: ConstantType = .equal) -> Self {
+    switch priority {
+    case .lessThanOrEqual:
+      bottomAnchor.constraint(lessThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.bottomAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    case .equal:
+      bottomAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.bottomAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    case .greaterThanOrEqual:
+      bottomAnchor.constraint(greaterThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.bottomAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    }
+    return self
+  }
+  
+  @discardableResult
+  final func right(constraint: NSLayoutXAxisAnchor? = nil, _ constant: CGFloat = 0, priority: ConstantType = .equal) -> Self {
+    switch priority {
+    case .lessThanOrEqual:
+      rightAnchor.constraint(lessThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.rightAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    case .equal:
+      rightAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.rightAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    case .greaterThanOrEqual:
+      rightAnchor.constraint(greaterThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.rightAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    }
+    return self
+  }
+  
+  @discardableResult
+  final func leading(constraint: NSLayoutXAxisAnchor? = nil, _ constant: CGFloat = 0, priority: ConstantType = .equal) -> Self {
+    switch priority {
+    case .lessThanOrEqual:
+      leadingAnchor.constraint(lessThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.leadingAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    case .equal:
+      leadingAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.leadingAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    case .greaterThanOrEqual:
+      leadingAnchor.constraint(greaterThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.leadingAnchor : constraint.unsafelyUnwrapped, constant: constant).isActive = true
+    }
+    return self
+  }
+  
+  @discardableResult
+  final func trailing(constraint: NSLayoutXAxisAnchor? = nil, _ constant: CGFloat = 0, priority: ConstantType = .equal) -> Self {
+    switch priority {
+    case .lessThanOrEqual:
+      trailingAnchor.constraint(lessThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.trailingAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    case .equal:
+      trailingAnchor.constraint(equalTo: constraint == nil ? superview.unsafelyUnwrapped.trailingAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    case .greaterThanOrEqual:
+      trailingAnchor.constraint(greaterThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.trailingAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
+    }
+    return self
+  }
 }
