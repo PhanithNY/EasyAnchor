@@ -22,4 +22,9 @@ extension Config where Self: NSObject {
     closure(self)
     return self
   }
+  
+  public func config(_ closure: (Self) -> Void) -> Self {
+    closure(self)
+    return self
+  }
 }
