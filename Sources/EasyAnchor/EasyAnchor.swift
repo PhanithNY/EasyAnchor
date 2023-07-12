@@ -205,7 +205,7 @@ public extension UIView {
   /// - Returns: current view
   @discardableResult
   final func size(equalTo size: CGFloat,
-                  priority: UILayoutPriority = .defaultHigh) -> Self {
+                  priority: UILayoutPriority = .required) -> Self {
     let _widthAnchor = widthAnchor.constraint(equalToConstant: size)
     _widthAnchor.priority = priority
     _widthAnchor.isActive = true
@@ -224,7 +224,7 @@ public extension UIView {
   @discardableResult
   final func size(width: CGFloat,
                   height: CGFloat,
-                  priority: UILayoutPriority = .defaultHigh) -> Self {
+                  priority: UILayoutPriority = .required) -> Self {
     let _widthAnchor = widthAnchor.constraint(equalToConstant: width)
     _widthAnchor.priority = priority
     _widthAnchor.isActive = true
