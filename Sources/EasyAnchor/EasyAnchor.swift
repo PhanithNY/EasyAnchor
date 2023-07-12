@@ -26,7 +26,9 @@ public extension UIView {
   
   /// Remove all subviews from current view
   final func removeSubviews() {
-    subviews.forEach { $0.removeFromSuperview() }
+    subviews.forEach {
+      $0.removeFromSuperview()
+    }
   }
   
   @discardableResult
@@ -63,8 +65,12 @@ public extension UIView {
   ///   - multiplier: The multiplier value compared to dimension. Default is 1.0
   /// - Returns: current view
   @discardableResult
-  final func width(dimension: NSLayoutDimension, multiplier: CGFloat = 1.0) -> Self {
-    widthAnchor.constraint(equalTo: dimension, multiplier: multiplier).isActive = true
+  final func width(dimension: NSLayoutDimension,
+                   multiplier: CGFloat = 1.0,
+                   priority: UILayoutPriority = .required) -> Self {
+    let _widthAnchor = widthAnchor.constraint(equalTo: dimension, multiplier: multiplier)
+    _widthAnchor.priority = priority
+    _widthAnchor.isActive = true
     return self
   }
   
@@ -72,8 +78,11 @@ public extension UIView {
   /// - Parameter constant: The constant value for anchor.
   /// - Returns: current view
   @discardableResult
-  final func width(_ constant: CGFloat) -> Self {
-    widthAnchor.constraint(equalToConstant: constant).isActive = true
+  final func width(_ constant: CGFloat,
+                   priority: UILayoutPriority = .required) -> Self {
+    let _widthAnchor = widthAnchor.constraint(equalToConstant: constant)
+    _widthAnchor.priority = priority
+    _widthAnchor.isActive = true
     return self
   }
   
@@ -95,14 +104,43 @@ public extension UIView {
     return self
   }
   
+  /// Apply width constraint.
+  /// - Parameters:
+  ///   - constantType: The constant type for this constraint. Default to .equal
+  ///   - constant: The constant value for constraint.
+  /// - Returns: current view
+  @discardableResult
+  final func width(_ constant: CGFloat,
+                   relativeBy constantType: ConstantType = .equal,
+                   priority: UILayoutPriority = .required) -> Self {
+    let _widthAnchor: NSLayoutConstraint
+    switch constantType {
+    case .lessThanOrEqual:
+      _widthAnchor = widthAnchor.constraint(lessThanOrEqualToConstant: constant)
+      
+    case .equal:
+      _widthAnchor = widthAnchor.constraint(equalToConstant: constant)
+      
+    case .greaterThanOrEqual:
+      _widthAnchor = widthAnchor.constraint(greaterThanOrEqualToConstant: constant)
+    }
+    _widthAnchor.priority = priority
+    _widthAnchor.isActive = true
+    return self
+  }
+  
   /// Apply height constraint with multiplier.
   /// - Parameters:
   ///   - dimension: The NSLayoutDimension that compared to.
   ///   - multiplier: The multiplier value compared to dimension. Default is 1.0
   /// - Returns: current view
   @discardableResult
-  final func height(dimension: NSLayoutDimension, multiplier: CGFloat = 1.0) -> Self {
-    heightAnchor.constraint(equalTo: dimension, multiplier: multiplier).isActive = true
+  final func height(dimension: NSLayoutDimension,
+                    multiplier: CGFloat = 1.0,
+                    priority: UILayoutPriority = .required) -> Self {
+    let _heightAnchor = heightAnchor.constraint(equalTo: dimension, multiplier: multiplier)
+    _heightAnchor.priority = priority
+    _heightAnchor.isActive = true
     return self
   }
   
@@ -110,8 +148,11 @@ public extension UIView {
   /// - Parameter constant: The constant value for anchor.
   /// - Returns: current view
   @discardableResult
-  final func height(_ constant: CGFloat) -> Self {
-    heightAnchor.constraint(equalToConstant: constant).isActive = true
+  final func height(_ constant: CGFloat,
+                    priority: UILayoutPriority = .required) -> Self {
+    let _heightAnchor = heightAnchor.constraint(equalToConstant: constant)
+    _heightAnchor.priority = priority
+    _heightAnchor.isActive = true
     return self
   }
   
@@ -133,13 +174,45 @@ public extension UIView {
     return self
   }
   
+  /// Apply height constraint.
+  /// - Parameters:
+  ///   - constantType: The constant type for this constraint. Default to .equal
+  ///   - constant: The constant value for constraint.
+  /// - Returns: current view
+  ///
+  @discardableResult
+  final func height(_ constant: CGFloat,
+                    relativeBy constantType: ConstantType = .equal,
+                    priority: UILayoutPriority = .required) -> Self {
+    let _heightAnchor: NSLayoutConstraint
+    switch constantType {
+    case .lessThanOrEqual:
+      _heightAnchor = heightAnchor.constraint(lessThanOrEqualToConstant: constant)
+      
+    case .equal:
+      _heightAnchor = heightAnchor.constraint(equalToConstant: constant)
+      
+    case .greaterThanOrEqual:
+      _heightAnchor = heightAnchor.constraint(greaterThanOrEqualToConstant: constant)
+    }
+    _heightAnchor.priority = priority
+    _heightAnchor.isActive = true
+    return self
+  }
+  
   /// Apply width and height constraint to the provided constant.
   /// - Parameter size: The target constant value.
   /// - Returns: current view
   @discardableResult
-  final func size(equalTo size: CGFloat) -> Self {
-    widthAnchor.constraint(equalToConstant: size).isActive = true
-    heightAnchor.constraint(equalToConstant: size).isActive = true
+  final func size(equalTo size: CGFloat,
+                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    let _widthAnchor = widthAnchor.constraint(equalToConstant: size)
+    _widthAnchor.priority = priority
+    _widthAnchor.isActive = true
+    
+    let _heightAnchor = heightAnchor.constraint(equalToConstant: size)
+    _heightAnchor.priority = priority
+    _heightAnchor.isActive = true
     return self
   }
   
@@ -149,9 +222,16 @@ public extension UIView {
   ///   - height: The constant value for height.
   /// - Returns: current view
   @discardableResult
-  final func size(width: CGFloat, height: CGFloat) -> Self {
-    widthAnchor.constraint(equalToConstant: width).isActive = true
-    heightAnchor.constraint(equalToConstant: height).isActive = true
+  final func size(width: CGFloat,
+                  height: CGFloat,
+                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    let _widthAnchor = widthAnchor.constraint(equalToConstant: width)
+    _widthAnchor.priority = priority
+    _widthAnchor.isActive = true
+    
+    let _heightAnchor = heightAnchor.constraint(equalToConstant: height)
+    _heightAnchor.priority = priority
+    _heightAnchor.isActive = true
     return self
   }
   
@@ -393,5 +473,20 @@ public extension UIView {
       trailingAnchor.constraint(greaterThanOrEqualTo: constraint == nil ? superview.unsafelyUnwrapped.trailingAnchor : constraint.unsafelyUnwrapped, constant: -constant).isActive = true
     }
     return self
+  }
+}
+
+// MARK: - Additional Helpers
+
+public extension UIView {
+  final func squircle(_ radius: CGFloat = 10.0,
+                      masksToBounds: Bool = true,
+                      maskedCorners: CACornerMask = [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]) {
+    if #available(iOS 13.0, *) {
+      layer.cornerCurve = .continuous
+    }
+    layer.cornerRadius = radius
+    layer.masksToBounds = masksToBounds
+    layer.maskedCorners = maskedCorners
   }
 }
