@@ -127,7 +127,7 @@ From Xcode menu bar:
 
 ## Author
 
-PhanithNY, ny.phanith.fe@gmail.com
+PhanithNY, phanith.ny@icloud.com
 
 ## License
 
