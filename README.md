@@ -95,7 +95,7 @@ let okButton: UIButton = {
 ```
 Here is shorthand syntax for above code.
 ```swift 
-let okButton = UIButton().decorate { 
+let okButton = UIButton().config { 
   $0.backgroundColor = .blue
   $0.setTitleColor(.white, for: .normal) 
   $0.setTitle("OK", for: .normal)
