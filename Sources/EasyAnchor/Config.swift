@@ -12,6 +12,7 @@ extension NSObject: Config { }
 
 extension Config where Self: NSObject {
   @discardableResult
+  @available(*, deprecated, renamed: "config")
   public func decorate(_ closure: (Self) -> Void) -> Self {
     closure(self)
     return self
