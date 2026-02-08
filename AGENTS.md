@@ -17,10 +17,14 @@
 - Prefer fluent, chainable helpers returning `Self` and mark result-ignoring APIs with `@discardableResult`.
 - Use `config { ... }` for closure-based setup; treat `decorate { ... }` as legacy.
 - Keep extension-based APIs in `Sources/EasyAnchor/EasyAnchor.swift` and configuration in `Sources/EasyAnchor/Config.swift`.
+- The layout helpers unwrap `superview`, so ensure the view is added to a superview before applying constraints.
+- For trailing and bottom, the helpers invert the constant for readability.
+- Utility helpers like `removeSubviews()` and `squircle(...)` live in `Sources/EasyAnchor/EasyAnchor.swift`.
 
 ## Testing Guidelines
 - Tests use XCTest (see `Tests/EasyAnchorTests/EasyAnchorTests.swift`).
 - Name test methods with `test...` to follow XCTest discovery conventions.
+- The current test target is empty; add coverage when changing behavior.
 - Run the full suite with `swift test` before opening a PR.
 
 ## Commit & Pull Request Guidelines

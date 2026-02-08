@@ -1,89 +1,115 @@
 # EasyAnchor
-EasyAnchor is a small extension that save time when anchoring view using AutoLayout.
+EasyAnchor is a tiny `UIView` extension that reduces Auto Layout boilerplate with fluent, chainable helpers.
 
 ## Usage
-It's a small and one line of code, but it's annoy that we need to specify **translatesAutoresizingMaskIntoConstraints = false** every time to use **AutoLayout**.
-With **EasyAnchor**, we resolve that annoying issue by using:
-```swift 
-button.layout { 
+Auto Layout requires `translatesAutoresizingMaskIntoConstraints = false` on each view. `layout { ... }` handles that for you.
+Make sure the view is inside a superview before applying constraints (the helpers unwrap `superview`).
+```swift
+button.layout {
   view.addSubview($0)
-  $0.setWidth(100)
-  $0.setHeight(50)
-  $0.left()
-  $0.bottom(constraint: redView.bottomAnchor, 0)
+  $0.width(100)
+    .height(50)
+    .leading()
+    .bottom(constraint: redView.bottomAnchor, 0)
 }
 ```
-or with chaining:
-```swift 
-button.layout { 
+
+or with size:
+```swift
+button.layout {
   view.addSubview($0)
-  $0.top().left().right().bottom()
+  $0.size(equalTo: 50)
+    .leading()
+    .bottom(constraint: redView.bottomAnchor, 0)
 }
 ```
-or fill superview:
-```swift 
-button.layout { 
+
+For trailing and bottom, the helpers invert the constant for readability:
+```swift
+button.layout {
+  view.addSubview($0)
+  $0.trailing(16) // Offset 16 from trailing.
+    .bottom(16)   // Offset 16 from bottom.
+}
+```
+
+More helpers:
+```swift
+button.layout {
+  view.addSubview($0)
+  $0.top().leading().trailing().bottom()
+}
+```
+```swift
+button.layout {
   view.addSubview($0)
   $0.fill()
 }
 ```
-or fill superview with insets:
-```swift 
-button.layout { 
+```swift
+button.layout {
   view.addSubview($0)
   $0.fill(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
 }
 ```
-or center superview:
-```swift 
-button.layout { 
+```swift
+button.layout {
   view.addSubview($0)
   $0.center()
 }
 ```
-or center vertically:
-```swift 
-button.layout { 
+```swift
+button.layout {
   view.addSubview($0)
   $0.centerY()
 }
-
-// With some padding
-button.layout { 
+```
+```swift
+button.layout {
   view.addSubview($0)
   $0.centerY(50)
 }
-
-// With some padding from specific constraint
-button.layout { 
+```
+```swift
+button.layout {
   view.addSubview($0)
   $0.centerY(constraint: redView.centerYAnchor, 10)
 }
 ```
-or center horizontally:
-```swift 
-button.layout { 
+```swift
+button.layout {
   view.addSubview($0)
   $0.centerX()
 }
-
-// With some padding
-button.layout { 
+```
+```swift
+button.layout {
   view.addSubview($0)
   $0.centerX(50)
 }
-
-// With some padding from specific constraint
-button.layout { 
+```
+```swift
+button.layout {
   view.addSubview($0)
   $0.centerX(constraint: redView.centerXAnchor, 10)
 }
 ```
 
-## Closure based building block
-A class based building block, enable the shorthand syntax just after the object is initialized.
-It's common that we create some view and configure it with default closure like this:
-```swift 
+## Priorities and Relative Constraints
+Some helpers accept priorities or constraint types:
+```swift
+button.layout {
+  view.addSubview($0)
+  $0.width(200, priority: .defaultHigh)
+    .height(.lessThanOrEqual, 44)
+    .top(priority: .greaterThanOrEqual)
+}
+```
+
+## Closure Based Building Block
+A class based building block enables shorthand setup right after initialization.
+It's common to create a view and configure it with a closure like this:
+```swift
 let okButton: UIButton = {
   let button = UIButton()
   button.backgroundColor = UIColor.blue
@@ -94,27 +120,36 @@ let okButton: UIButton = {
 }()
 ```
 Here is shorthand syntax for above code.
-```swift 
-let okButton = UIButton().config { 
+```swift
+let okButton = UIButton().config {
   $0.backgroundColor = .blue
-  $0.setTitleColor(.white, for: .normal) 
+  $0.setTitleColor(.white, for: .normal)
   $0.setTitle("OK", for: .normal)
   $0.layer.cornerRadius = 8
 }
 ```
+`decorate { ... }` is available for legacy code, but prefer `config { ... }`.
 
 ## AutoLayout
-To enable or disable AutoLayout for specific view:
-```swift 
+Enable or disable Auto Layout on a specific view:
+```swift
 button.useAutoLayout = true // enable
 button.useAutoLayout = false // disable
+```
+
+## Utilities
+```swift
+view.removeSubviews()
+```
+```swift
+avatarView.squircle(12)
 ```
 
 ## Installation
 Copy `EasyAnchor.swift` and `Config.swift` to your project, or
 
 ### Cocoapods
-`pod 'EasyAnchor', :git => 'https://github.com/PhanithNY/EasyAnchor.git'` 
+`pod 'EasyAnchor', :git => 'https://github.com/PhanithNY/EasyAnchor.git'`
 
 ### Swift Package Manager
 From Xcode menu bar:
