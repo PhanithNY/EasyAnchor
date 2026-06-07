@@ -7,8 +7,9 @@
 - `EasyAnchor.podspec` supports CocoaPods distribution.
 
 ## Build, Test, and Development Commands
-- `swift build` — build the EasyAnchor library with SPM.
-- `swift test` — run the XCTest suite in `Tests/`.
+- `xcodebuild -scheme EasyAnchor -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build` — build the UIKit-based package for iOS Simulator.
+- `xcodebuild -scheme EasyAnchor -showdestinations` — list available test destinations before running simulator tests.
+- `xcodebuild -scheme EasyAnchor -destination 'platform=iOS Simulator,name=<installed simulator name>' test` — run the XCTest suite on an installed iOS Simulator; replace the placeholder with a destination from `-showdestinations`.
 - `swift package describe` — inspect the package manifest and targets.
 
 ## Coding Style & Naming Conventions
@@ -21,11 +22,67 @@
 - For trailing and bottom, the helpers invert the constant for readability.
 - Utility helpers like `removeSubviews()` and `squircle(...)` live in `Sources/EasyAnchor/EasyAnchor.swift`.
 
+## README Sample API Patterns
+- Prefer README-style examples that call `layout { ... }`, add the view to its superview inside the closure, then chain constraints:
+  ```swift
+  button.layout {
+    view.addSubview($0)
+    $0.width(100)
+      .height(50)
+      .leading()
+      .bottom(constraint: redView.bottomAnchor)
+  }
+  ```
+- Use `size(equalTo:)` for square dimensions and `fill()` or `fill(insets:)` for pinning all edges:
+  ```swift
+  button.layout {
+    view.addSubview($0)
+    $0.size(equalTo: 50)
+      .leading()
+      .bottom(constraint: redView.bottomAnchor)
+  }
+  ```
+  ```swift
+  button.layout {
+    view.addSubview($0)
+    $0.fill(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+  }
+  ```
+- Keep trailing and bottom examples readable with positive constants; the helpers apply negative constraint constants internally:
+  ```swift
+  button.layout {
+    view.addSubview($0)
+    $0.trailing(16)
+      .bottom(16)
+  }
+  ```
+- Centering helpers should mirror README usage: `center()`, `centerX()`, `centerY()`, and anchor-specific overloads like `centerX(constraint: redView.centerXAnchor, 10)`.
+- Omit the constant argument when it is `0`; prefer defaults like `bottom(constraint: redView.bottomAnchor)` over `bottom(constraint: redView.bottomAnchor, 0)`.
+- For priority and relative constraints, use existing overloads such as:
+  ```swift
+  button.layout {
+    view.addSubview($0)
+    $0.width(200, priority: .defaultHigh)
+      .height(.lessThanOrEqual, 44)
+      .top(priority: .greaterThanOrEqual)
+  }
+  ```
+- For closure-based property setup, prefer `config { ... }`:
+  ```swift
+  let okButton = UIButton().config {
+    $0.backgroundColor = .blue
+    $0.setTitleColor(.white, for: .normal)
+    $0.setTitle("OK", for: .normal)
+    $0.layer.cornerRadius = 8
+  }
+  ```
+- README utility examples include `button.useAutoLayout = true`, `view.removeSubviews()`, and `avatarView.squircle(12)`.
+
 ## Testing Guidelines
 - Tests use XCTest (see `Tests/EasyAnchorTests/EasyAnchorTests.swift`).
 - Name test methods with `test...` to follow XCTest discovery conventions.
-- The current test target is empty; add coverage when changing behavior.
-- Run the full suite with `swift test` before opening a PR.
+- Add or update tests when changing behavior.
+- Run the full suite with the iOS Simulator `xcodebuild ... test` command before opening a PR.
 
 ## Commit & Pull Request Guidelines
 - Commit messages in history are short, imperative, and sentence-cased (e.g., "Update README.md", "Added config method"). Follow this pattern; no prefixing required.

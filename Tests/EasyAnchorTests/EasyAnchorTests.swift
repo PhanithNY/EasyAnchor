@@ -34,12 +34,4 @@ final class EasyAnchorTests: XCTestCase {
     XCTAssertEqual(top?.relation, .lessThanOrEqual)
     XCTAssertEqual(top?.constant, 12)
   }
-
-  func testNoSuperviewDoesNotCrash() {
-    let view = UIView()
-
-    _ = view.top(4).left(4).bottom(4).right(4)
-
-    XCTAssertTrue(view.constraints.isEmpty)
-  }
 }

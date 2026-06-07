@@ -10,7 +10,7 @@ button.layout {
   $0.width(100)
     .height(50)
     .leading()
-    .bottom(constraint: redView.bottomAnchor, 0)
+    .bottom(constraint: redView.bottomAnchor)
 }
 ```
 
@@ -20,7 +20,7 @@ button.layout {
   view.addSubview($0)
   $0.size(equalTo: 50)
     .leading()
-    .bottom(constraint: redView.bottomAnchor, 0)
+    .bottom(constraint: redView.bottomAnchor)
 }
 ```
 
