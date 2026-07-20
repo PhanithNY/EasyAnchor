@@ -28,6 +28,8 @@ TODO: Add long description of the pod here.
   s.social_media_url = 'https://twitter.com/Ny_Phanith'
 
   s.ios.deployment_target = '10.0'
+  s.osx.deployment_target = '10.13'
+  s.swift_versions = ['5.0']
 
   s.source_files = 'Sources/EasyAnchor/**/*'
   

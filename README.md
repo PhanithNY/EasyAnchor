@@ -1,9 +1,19 @@
 # EasyAnchor
-EasyAnchor is a tiny `UIView` extension that reduces Auto Layout boilerplate with fluent, chainable helpers.
+
+EasyAnchor is a tiny `UIView` and `NSView` extension that reduces Auto Layout boilerplate with fluent, chainable helpers on iOS and macOS.
+
+## Platform Support
+
+- iOS 10 or later using `UIView`, `UIEdgeInsets`, and `UILayoutPriority`.
+- macOS 10.13 or later using `NSView`, `NSEdgeInsets`, and `NSLayoutConstraint.Priority`.
+
+The fluent method names and behavior are the same on both platforms. EasyAnchor selects the native platform types at compile time.
 
 ## Usage
+
 Auto Layout requires `translatesAutoresizingMaskIntoConstraints = false` on each view. `layout { ... }` handles that for you.
 Make sure the view is inside a superview before applying constraints (the helpers unwrap `superview`).
+
 ```swift
 button.layout {
   view.addSubview($0)
@@ -52,6 +62,18 @@ button.layout {
   $0.fill(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
 }
 ```
+
+On macOS, the same API uses native AppKit types:
+
+```swift
+import AppKit
+
+let button = NSButton()
+button.layout {
+  view.addSubview($0)
+  $0.fill(insets: NSEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+}
+```
 ```swift
 button.layout {
   view.addSubview($0)
@@ -96,7 +118,9 @@ button.layout {
 ```
 
 ## Priorities and Relative Constraints
+
 Some helpers accept priorities or constraint types:
+
 ```swift
 button.layout {
   view.addSubview($0)
@@ -107,8 +131,10 @@ button.layout {
 ```
 
 ## Closure Based Building Block
+
 A class based building block enables shorthand setup right after initialization.
 It's common to create a view and configure it with a closure like this:
+
 ```swift
 let okButton: UIButton = {
   let button = UIButton()
@@ -120,6 +146,7 @@ let okButton: UIButton = {
 }()
 ```
 Here is shorthand syntax for above code.
+
 ```swift
 let okButton = UIButton().config {
   $0.backgroundColor = .blue
@@ -130,25 +157,39 @@ let okButton = UIButton().config {
 ```
 `decorate { ... }` is available for legacy code, but prefer `config { ... }`.
 
+The same configuration helper is available to AppKit objects:
+
+```swift
+let okButton = NSButton().config {
+  $0.title = "OK"
+  $0.bezelStyle = .rounded
+}
+```
+
 ## AutoLayout
+
 Enable or disable Auto Layout on a specific view:
+
 ```swift
 button.useAutoLayout = true // enable
 button.useAutoLayout = false // disable
 ```
 
 ## Utilities
+
 ```swift
 view.removeSubviews()
 ```
 ```swift
 avatarView.squircle(12)
 ```
+`squircle(...)` requires iOS 11 or later. On macOS it creates a backing layer when needed.
 
 ## Installation
 Copy `EasyAnchor.swift` and `Config.swift` to your project, or
 
-### Cocoapods
+### CocoaPods
+
 `pod 'EasyAnchor', :git => 'https://github.com/PhanithNY/EasyAnchor.git'`
 
 ### Swift Package Manager
@@ -157,8 +198,7 @@ From Xcode menu bar:
 1. File
 2. Swift Packages
 3. Add Package Dependency...
-4. Paste the repo url `https://github.com/PhanithNY/EasyAnchor.git`
-
+4. Paste the repository URL `https://github.com/PhanithNY/EasyAnchor.git`
 
 ## Author
 

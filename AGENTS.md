@@ -7,20 +7,24 @@
 - `EasyAnchor.podspec` supports CocoaPods distribution.
 
 ## Build, Test, and Development Commands
-- `xcodebuild -scheme EasyAnchor -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build` — build the UIKit-based package for iOS Simulator.
+- `swift test` — build the AppKit variant and run the XCTest suite on macOS.
+- `xcodebuild -scheme EasyAnchor -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build` — build the UIKit variant for iOS Simulator.
 - `xcodebuild -scheme EasyAnchor -showdestinations` — list available test destinations before running simulator tests.
 - `xcodebuild -scheme EasyAnchor -destination 'platform=iOS Simulator,name=<installed simulator name>' test` — run the XCTest suite on an installed iOS Simulator; replace the placeholder with a destination from `-showdestinations`.
 - `swift package describe` — inspect the package manifest and targets.
+- `pod lib lint EasyAnchor.podspec --allow-warnings` — validate CocoaPods integration for both iOS and macOS after changing source or pod metadata.
 
 ## Coding Style & Naming Conventions
-- Swift, UIKit-first API. Indentation is 2 spaces in existing files; keep it consistent.
+- Swift, UIKit/AppKit API with matching fluent behavior on both platforms. Indentation is 2 spaces in existing files; keep it consistent.
 - Methods use lowerCamelCase (e.g., `centerX`, `useAutoLayout`).
 - Prefer fluent, chainable helpers returning `Self` and mark result-ignoring APIs with `@discardableResult`.
 - Use `config { ... }` for closure-based setup; treat `decorate { ... }` as legacy.
 - Keep extension-based APIs in `Sources/EasyAnchor/EasyAnchor.swift` and configuration in `Sources/EasyAnchor/Config.swift`.
+- Preserve the compile-time mappings between `UIView`/`NSView`, `UIEdgeInsets`/`NSEdgeInsets`, and UIKit/AppKit constraint priorities.
+- Use `Foundation` rather than a platform UI framework in shared configuration code when UIKit or AppKit types are not required.
 - The layout helpers unwrap `superview`, so ensure the view is added to a superview before applying constraints.
 - For trailing and bottom, the helpers invert the constant for readability.
-- Utility helpers like `removeSubviews()` and `squircle(...)` live in `Sources/EasyAnchor/EasyAnchor.swift`.
+- Utility helpers like `removeSubviews()` and `squircle(...)` live in `Sources/EasyAnchor/EasyAnchor.swift`; AppKit layer helpers must enable a backing layer when needed.
 
 ## README Sample API Patterns
 - Prefer README-style examples that call `layout { ... }`, add the view to its superview inside the closure, then chain constraints:
@@ -46,6 +50,13 @@
   button.layout {
     view.addSubview($0)
     $0.fill(insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+  }
+  ```
+- For equivalent macOS examples, use native AppKit types without changing the fluent calls:
+  ```swift
+  button.layout {
+    view.addSubview($0)
+    $0.fill(insets: NSEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
   }
   ```
 - Keep trailing and bottom examples readable with positive constants; the helpers apply negative constraint constants internally:
@@ -81,8 +92,8 @@
 ## Testing Guidelines
 - Tests use XCTest (see `Tests/EasyAnchorTests/EasyAnchorTests.swift`).
 - Name test methods with `test...` to follow XCTest discovery conventions.
-- Add or update tests when changing behavior.
-- Run the full suite with the iOS Simulator `xcodebuild ... test` command before opening a PR.
+- Add or update tests when changing behavior, using native `UIView` and `NSView` types selected with conditional compilation.
+- Run the full suite with both `swift test` on macOS and the iOS Simulator `xcodebuild ... test` command before opening a PR.
 
 ## Commit & Pull Request Guidelines
 - Commit messages in history are short, imperative, and sentence-cased (e.g., "Update README.md", "Added config method"). Follow this pattern; no prefixing required.
@@ -90,5 +101,5 @@
 - If behavior changes, add or update tests in `Tests/EasyAnchorTests/` and mention how to verify.
 
 ## Security & Configuration Notes
-- This is a lightweight layout helper; no external services or secrets are expected.
+- This is a lightweight cross-platform layout helper; no external services or secrets are expected.
 - When adding new APIs, keep defaults safe and document edge cases in `README.md`.

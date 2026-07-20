@@ -1,10 +1,18 @@
 import XCTest
 @testable import EasyAnchor
 
+#if canImport(UIKit)
+import UIKit
+private typealias PlatformView = UIView
+#elseif canImport(AppKit)
+import AppKit
+private typealias PlatformView = NSView
+#endif
+
 final class EasyAnchorTests: XCTestCase {
   func testBottomAndTrailingConstantsInvert() {
-    let container = UIView()
-    let view = UIView()
+    let container = PlatformView()
+    let view = PlatformView()
     container.addSubview(view)
 
     _ = view.bottom(10).trailing(8)
@@ -21,8 +29,8 @@ final class EasyAnchorTests: XCTestCase {
   }
 
   func testTopRelationUsesLessThanOrEqual() {
-    let container = UIView()
-    let view = UIView()
+    let container = PlatformView()
+    let view = PlatformView()
     container.addSubview(view)
 
     _ = view.top(constraint: container.topAnchor, 12, priority: .lessThanOrEqual)
@@ -33,5 +41,37 @@ final class EasyAnchorTests: XCTestCase {
 
     XCTAssertEqual(top?.relation, .lessThanOrEqual)
     XCTAssertEqual(top?.constant, 12)
+  }
+
+  func testLayoutAndFillUsePlatformNativeTypes() {
+    let container = PlatformView()
+    let view = PlatformView()
+
+    view.layout {
+      container.addSubview($0)
+      $0.fill(insets: EasyAnchorEdgeInsets(top: 1, left: 2, bottom: 3, right: 4))
+    }
+
+    XCTAssertFalse(view.translatesAutoresizingMaskIntoConstraints)
+    XCTAssertEqual(container.constraints.count, 4)
+    XCTAssertTrue(container.constraints.contains { $0.firstAttribute == .top && $0.constant == 1 })
+    XCTAssertTrue(container.constraints.contains { $0.firstAttribute == .left && $0.constant == 2 })
+    XCTAssertTrue(container.constraints.contains { $0.firstAttribute == .bottom && $0.constant == -3 })
+    XCTAssertTrue(container.constraints.contains { $0.firstAttribute == .right && $0.constant == -4 })
+  }
+
+  func testSquircleConfiguresBackingLayer() {
+    let view = PlatformView()
+
+    view.squircle(12)
+
+#if canImport(UIKit)
+    XCTAssertEqual(view.layer.cornerRadius, 12)
+    XCTAssertTrue(view.layer.masksToBounds)
+#elseif canImport(AppKit)
+    XCTAssertTrue(view.wantsLayer)
+    XCTAssertEqual(view.layer?.cornerRadius, 12)
+    XCTAssertEqual(view.layer?.masksToBounds, true)
+#endif
   }
 }

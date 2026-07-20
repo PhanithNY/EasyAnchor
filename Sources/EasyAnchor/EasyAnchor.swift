@@ -1,6 +1,24 @@
+#if canImport(UIKit)
 import UIKit
 
-public extension UIView {
+public typealias EasyAnchorView = UIView
+public typealias EasyAnchorEdgeInsets = UIEdgeInsets
+public typealias EasyAnchorLayoutPriority = UILayoutPriority
+#elseif canImport(AppKit)
+import AppKit
+
+public typealias EasyAnchorView = NSView
+public typealias EasyAnchorEdgeInsets = NSEdgeInsets
+public typealias EasyAnchorLayoutPriority = NSLayoutConstraint.Priority
+
+public extension NSEdgeInsets {
+  static var zero: NSEdgeInsets {
+    NSEdgeInsets()
+  }
+}
+#endif
+
+public extension EasyAnchorView {
   
   enum ConstantType {
     case lessThanOrEqual
@@ -19,7 +37,7 @@ public extension UIView {
   
   /// Layout view using wrapper closure.
   /// - Parameter closure: The configuration closure of current view
-  final func layout(using closure: ((UIView) -> Void)) {
+  final func layout(using closure: ((EasyAnchorView) -> Void)) {
     translatesAutoresizingMaskIntoConstraints = false
     closure(self)
   }
@@ -67,7 +85,7 @@ public extension UIView {
   @discardableResult
   final func width(dimension: NSLayoutDimension,
                    multiplier: CGFloat = 1.0,
-                   priority: UILayoutPriority = .required) -> Self {
+                   priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _widthAnchor = widthAnchor.constraint(equalTo: dimension, multiplier: multiplier)
     _widthAnchor.priority = priority
     _widthAnchor.isActive = true
@@ -79,7 +97,7 @@ public extension UIView {
   /// - Returns: current view
   @discardableResult
   final func width(_ constant: CGFloat,
-                   priority: UILayoutPriority = .required) -> Self {
+                   priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _widthAnchor = widthAnchor.constraint(equalToConstant: constant)
     _widthAnchor.priority = priority
     _widthAnchor.isActive = true
@@ -112,7 +130,7 @@ public extension UIView {
   @discardableResult
   final func width(_ constant: CGFloat,
                    relativeBy constantType: ConstantType = .equal,
-                   priority: UILayoutPriority = .required) -> Self {
+                   priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _widthAnchor: NSLayoutConstraint
     switch constantType {
     case .lessThanOrEqual:
@@ -137,7 +155,7 @@ public extension UIView {
   @discardableResult
   final func height(dimension: NSLayoutDimension,
                     multiplier: CGFloat = 1.0,
-                    priority: UILayoutPriority = .required) -> Self {
+                    priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _heightAnchor = heightAnchor.constraint(equalTo: dimension, multiplier: multiplier)
     _heightAnchor.priority = priority
     _heightAnchor.isActive = true
@@ -149,7 +167,7 @@ public extension UIView {
   /// - Returns: current view
   @discardableResult
   final func height(_ constant: CGFloat,
-                    priority: UILayoutPriority = .required) -> Self {
+                    priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _heightAnchor = heightAnchor.constraint(equalToConstant: constant)
     _heightAnchor.priority = priority
     _heightAnchor.isActive = true
@@ -183,7 +201,7 @@ public extension UIView {
   @discardableResult
   final func height(_ constant: CGFloat,
                     relativeBy constantType: ConstantType = .equal,
-                    priority: UILayoutPriority = .required) -> Self {
+                    priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _heightAnchor: NSLayoutConstraint
     switch constantType {
     case .lessThanOrEqual:
@@ -205,7 +223,7 @@ public extension UIView {
   /// - Returns: current view
   @discardableResult
   final func size(equalTo size: CGFloat,
-                  priority: UILayoutPriority = .required) -> Self {
+                  priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _widthAnchor = widthAnchor.constraint(equalToConstant: size)
     _widthAnchor.priority = priority
     _widthAnchor.isActive = true
@@ -224,7 +242,7 @@ public extension UIView {
   @discardableResult
   final func size(width: CGFloat,
                   height: CGFloat,
-                  priority: UILayoutPriority = .required) -> Self {
+                  priority: EasyAnchorLayoutPriority = .required) -> Self {
     let _widthAnchor = widthAnchor.constraint(equalToConstant: width)
     _widthAnchor.priority = priority
     _widthAnchor.isActive = true
@@ -305,7 +323,7 @@ public extension UIView {
   /// - Parameter insets: The insets from superview
   /// - Returns: current view
   @discardableResult
-  final func fill(insets: UIEdgeInsets = .zero) -> Self {
+  final func fill(insets: EasyAnchorEdgeInsets = .zero) -> Self {
     topAnchor.constraint(equalTo: superview.unsafelyUnwrapped.topAnchor, constant: insets.top).isActive = true
     leftAnchor.constraint(equalTo: superview.unsafelyUnwrapped.leftAnchor, constant: insets.left).isActive = true
     bottomAnchor.constraint(equalTo: superview.unsafelyUnwrapped.bottomAnchor, constant: -insets.bottom).isActive = true
@@ -339,7 +357,7 @@ public extension UIView {
   /// - Parameter view: The target view. Default is superview.
   /// - Returns: current view
   @discardableResult
-  final func center(in view: UIView? = nil) -> Self {
+  final func center(in view: EasyAnchorView? = nil) -> Self {
     centerXAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.centerXAnchor : view.unsafelyUnwrapped.centerXAnchor).isActive = true
     centerYAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.centerYAnchor : view.unsafelyUnwrapped.centerYAnchor).isActive = true
     return self
@@ -352,7 +370,7 @@ public extension UIView {
   ///   - left: The left constant.
   /// - Returns: current view
   @discardableResult
-  final func topLeft(_ view: UIView? = nil, top: CGFloat = 0, left: CGFloat = 0) -> Self {
+  final func topLeft(_ view: EasyAnchorView? = nil, top: CGFloat = 0, left: CGFloat = 0) -> Self {
     topAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.topAnchor : view.unsafelyUnwrapped.topAnchor, constant: top).isActive = true
     leftAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.leftAnchor : view.unsafelyUnwrapped.leftAnchor, constant: left).isActive = true
     return self
@@ -365,7 +383,7 @@ public extension UIView {
   ///   - left: The left constant.
   /// - Returns: current view
   @discardableResult
-  final func bottomLeft(_ view: UIView? = nil, bottom: CGFloat = 0, left: CGFloat = 0) -> Self {
+  final func bottomLeft(_ view: EasyAnchorView? = nil, bottom: CGFloat = 0, left: CGFloat = 0) -> Self {
     bottomAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.bottomAnchor : view.unsafelyUnwrapped.bottomAnchor, constant: -bottom).isActive = true
     leftAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.leftAnchor : view.unsafelyUnwrapped.leftAnchor, constant: left).isActive = true
     return self
@@ -378,7 +396,7 @@ public extension UIView {
   ///   - right: The right constant.
   /// - Returns: current view
   @discardableResult
-  final func topRight(_ view: UIView? = nil, top: CGFloat = 0, right: CGFloat = 0) -> Self {
+  final func topRight(_ view: EasyAnchorView? = nil, top: CGFloat = 0, right: CGFloat = 0) -> Self {
     topAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.topAnchor : view.unsafelyUnwrapped.topAnchor, constant: top).isActive = true
     rightAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.rightAnchor : view.unsafelyUnwrapped.rightAnchor, constant: -right).isActive = true
     return self
@@ -391,7 +409,7 @@ public extension UIView {
   ///   - right: The right constant.
   /// - Returns: current view
   @discardableResult
-  final func bottomRight(_ view: UIView? = nil, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
+  final func bottomRight(_ view: EasyAnchorView? = nil, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
     bottomAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.bottomAnchor : view.unsafelyUnwrapped.bottomAnchor, constant: -bottom).isActive = true
     rightAnchor.constraint(equalTo: view == nil ? superview.unsafelyUnwrapped.rightAnchor : view.unsafelyUnwrapped.rightAnchor, constant: -right).isActive = true
     return self
@@ -478,15 +496,26 @@ public extension UIView {
 
 // MARK: - Additional Helpers
 
-public extension UIView {
+public extension EasyAnchorView {
+  @available(iOS 11.0, *)
   final func squircle(_ radius: CGFloat = 10.0,
                       masksToBounds: Bool = true,
                       maskedCorners: CACornerMask = [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]) {
+#if canImport(UIKit)
     if #available(iOS 13.0, *) {
       layer.cornerCurve = .continuous
     }
     layer.cornerRadius = radius
     layer.masksToBounds = masksToBounds
     layer.maskedCorners = maskedCorners
+#elseif canImport(AppKit)
+    wantsLayer = true
+    if #available(macOS 10.15, *) {
+      layer?.cornerCurve = .continuous
+    }
+    layer?.cornerRadius = radius
+    layer?.masksToBounds = masksToBounds
+    layer?.maskedCorners = maskedCorners
+#endif
   }
 }

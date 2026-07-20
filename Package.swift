@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
   name: "EasyAnchor",
   platforms: [
-    .iOS("10.0")
+    .iOS("10.0"),
+    .macOS("10.13")
   ],
   products: [
     // Products define the executables and libraries produced by a package, and make them visible to other packages.

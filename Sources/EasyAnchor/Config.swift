@@ -5,7 +5,7 @@
 //  Created by PhanithNY on 1/10/20.
 //
 
-import UIKit
+import Foundation
 
 public protocol Config { }
 extension NSObject: Config { }
